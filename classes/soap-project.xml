@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+		<mulexml:namespace-manager
+		includeConfigNamespaces="true">
+		<mulexml:namespace prefix="tns"
+			uri="http://www.example.org/ticketSchema" />
+	</mulexml:namespace-manager>
+    <http:listener-config name="HTTP_Listener_Configuration" host="localhost" port="8081" doc:name="HTTP Listener Configuration"/>
+    <cxf:configuration name="CXF_Configuration" enableMuleSoapHeaders="true" initializeStaticBusInstance="true" doc:name="CXF Configuration"/>
+    <db:generic-config name="Generic_Database_Configuration" url="jdbc:postgresql://localhost:5432/Ticketing?password=samar&amp;user=postgres" driverClassName="org.postgresql.Driver" doc:name="Generic Database Configuration"/>
+    <mulexml:jaxb-context name="JAXB_Context1" packageNames="xmlSch" doc:name="JAXB Context"/>
+    <flow name="soap-projectFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/SOAP" doc:name="HTTP"/>
+        <cxf:proxy-service configuration-ref="CXF_Configuration" port="ticketOperations" namespace="http://new.webservice.namespace" service="SOAPTicket" validationEnabled="true" payload="body" wsdlLocation="testing.wsdl" doc:name="CXF"/>
+        <logger message="Valid Input Encountered" level="INFO" doc:name="Logger"/>
+        <choice doc:name="Choice">
+            <when expression="#[message.inboundProperties['soapAction'] == 'http://SOAPproject/getAllTicketRequest']">
+                <flow-ref name="getAllTicketRequest" doc:name="getAllTicketRequest"/>
+            </when>
+            <when expression="#[message.inboundProperties['soapAction'] == 'http://SOAPproject/deleteTicketRequest']">
+                <flow-ref name="deleteTicketRequest" doc:name="deleteTicketRequest"/>
+            </when>
+            <when expression="#[message.inboundProperties['soapAction'] == 'http://SOAPproject/updateTicketRequest']">
+                <flow-ref name="updateTicketRequest" doc:name="updateTicketRequest"/>
+            </when>
+            <when expression="#[message.inboundProperties['soapAction'] == 'http://SOAPproject/getTicketRequest']">
+                <flow-ref name="getTicketRequest" doc:name="getTicketRequest"/>
+            </when>
+            <otherwise>
+                <flow-ref name="inputTicketRequest" doc:name="inputTicketRequest"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <sub-flow name="inputTicketRequest">
+        <logger message="Entered inputTicketRequest" level="INFO" doc:name="Logger"/>
+        <db:insert config-ref="Generic_Database_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[insert into Ticket(customer_id,user_id,group_id,label_id,state,subject,reply_to,reply_cc,spam,trash,created_at,updated_at)
+values(				#[xpath3('/tns:inputTicketRequest/tns:customer_id')], 					#[xpath3('/tns:inputTicketRequest/tns:user_id')], 
+					#[xpath3('/tns:inputTicketRequest/tns:group_id')], 
+					#[xpath3('/tns:inputTicketRequest/tns:label_id')], 
+					#[xpath3('/tns:inputTicketRequest/tns:state')], 
+					#[xpath3('/tns:inputTicketRequest/tns:subject')], 
+					#[xpath3('/tns:inputTicketRequest/tns:reply_to')], 
+					#[xpath3('/tns:inputTicketRequest/tns:reply_cc')], 
+					#[xpath3('/tns:inputTicketRequest/tns:spam')], 
+					#[xpath3('/tns:inputTicketRequest/tns:trash')], 
+					#[xpath3('/tns:inputTicketRequest/tns:updated_at')],
+					#[xpath3('/tns:inputTicketRequest/tns:created_at')] 
+)]]></db:parameterized-query>
+        </db:insert>
+        <set-payload value="&lt;tns:inputTicketResponse xmlns:tns=&quot;http://www.example.org/ticketSchema&quot;&gt;   200   &lt;/tns:inputTicketResponse&gt; " doc:name="Set Payload"/>
+    </sub-flow>
+    <sub-flow name="getAllTicketRequest">
+        <logger level="INFO" doc:name="Logger" message="Entered getAllTicketRequest"/>
+        <db:select config-ref="Generic_Database_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[select * from Ticket]]></db:parameterized-query>
+        </db:select>
+        <custom-processor class="org.soapProject.DBtoXML" doc:name="DBtoXML" name="DBtoXML"/>
+        <mulexml:object-to-xml-transformer doc:name="Object to XML"/>
+    </sub-flow>
+    <sub-flow name="updateTicketRequest">
+        <mulexml:dom-to-xml-transformer doc:name="DOM to XML"/>
+        <mulexml:jaxb-xml-to-object-transformer returnClass="xmlSch.UpdateTicketRequest" mimeType="application/java" jaxbContext-ref="JAXB_Context1" doc:name="XML to JAXB Object"/>
+        <logger level="INFO" doc:name="Logger"/>
+        <custom-processor class="org.soapProject.queryStringBuilder" doc:name="queryStringBuilder" name="queryStringBuilder"/>
+        <db:update config-ref="Generic_Database_Configuration" doc:name="Database">
+            <db:dynamic-query><![CDATA[#[payload]]]></db:dynamic-query>
+        </db:update>
+        <set-payload value="&lt;tns:updateTicketResponse xmlns:tns=&quot;http://www.example.org/ticketSchema&quot;&gt;200&lt;/tns:updateTicketResponse&gt;" doc:name="Set Payload"/>
+    </sub-flow>
+    <sub-flow name="deleteTicketRequest">
+        <logger level="INFO" doc:name="Logger"/>
+        <db:delete config-ref="Generic_Database_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[delete from Ticket
+where id = #[xpath3('/tns:deleteTicketRequest')]]]></db:parameterized-query>
+        </db:delete>
+        <set-payload value="&lt;tns:deleteTicketResponse xmlns:tns=&quot;http://www.example.org/ticketSchema&quot;&gt;   200   &lt;/tns:deleteTicketResponse&gt; " doc:name="Set Payload"/>
+    </sub-flow>
+    <sub-flow name="getTicketRequest">
+        <logger level="INFO" doc:name="Logger"/>
+        <db:select config-ref="Generic_Database_Configuration" doc:name="Database">
+            <db:parameterized-query><![CDATA[select * from Ticket
+where id = #[xpath3('/tns:getTicketRequest')]]]></db:parameterized-query>
+        </db:select>
+        <custom-processor class="org.soapProject.DBtoXML" doc:name="DBtoXML_get" name="DBtoXML_get"/>
+        <mulexml:object-to-xml-transformer doc:name="Object to XML"/>
+    </sub-flow>
+</mule>

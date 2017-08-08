@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ws="http://new.webservice.namespace" xmlns:tns="http://www.example.org/ticketSchema" targetNamespace="http://new.webservice.namespace">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://www.example.org/ticketSchema" xmlns:tns="http://www.example.org/ticketSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+			<xs:element name="getAllTicketRequest" type="xs:integer"/>
+			<xs:element name="getAllTicketResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="customer_id" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="group_id" type="xs:string"/>
+						<xs:element name="label_id" type="xs:string"/>
+						<xs:element name="state">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="in progress"/>
+									<xs:enumeration value="opened"/>
+									<xs:enumeration value="closed"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="subject" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="reply_cc" type="xs:string"/>
+						<xs:element name="spam" type="xs:boolean"/>
+						<xs:element name="trash" type="xs:boolean"/>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="updated_at" type="xs:date"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getTicketResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="customer_id" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="group_id" type="xs:string"/>
+						<xs:element name="label_id" type="xs:string"/>
+						<xs:element name="state">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="in progress"/>
+									<xs:enumeration value="opened"/>
+									<xs:enumeration value="closed"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="subject" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="reply_cc" type="xs:string"/>
+						<xs:element name="spam" type="xs:boolean"/>
+						<xs:element name="trash" type="xs:boolean"/>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="updated_at" type="xs:date"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getTicketRequest" type="xs:integer"/>
+			<xs:element name="inputTicketRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="customer_id" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="group_id" type="xs:string"/>
+						<xs:element name="label_id" type="xs:string"/>
+						<xs:element name="state">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="in progress"/>
+									<xs:enumeration value="opened"/>
+									<xs:enumeration value="closed"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="subject" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="reply_cc" type="xs:string"/>
+						<xs:element name="spam" type="xs:boolean"/>
+						<xs:element name="trash" type="xs:boolean"/>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="updated_at" type="xs:date"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="inputTicketResponse" type="xs:integer"/>
+			<xs:element name="updateTicketResponse" type="xs:integer"/>
+			<xs:element name="updateTicketRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="id" type="xs:integer" minOccurs="0"/>
+						<xs:element name="customer_id" type="xs:string" minOccurs="0"/>
+						<xs:element name="user_id" type="xs:string" minOccurs="0"/>
+						<xs:element name="group_id" type="xs:string" minOccurs="0"/>
+						<xs:element name="label_id" type="xs:string" minOccurs="0"/>
+						<xs:element name="state" minOccurs="0">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="in progress"/>
+									<xs:enumeration value="opened"/>
+									<xs:enumeration value="closed"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="subject" type="xs:string" minOccurs="0"/>
+						<xs:element name="reply_to" type="xs:string" minOccurs="0"/>
+						<xs:element name="reply_cc" type="xs:string" minOccurs="0"/>
+						<xs:element name="spam" type="xs:boolean" minOccurs="0"/>
+						<xs:element name="trash" type="xs:boolean" minOccurs="0"/>
+						
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="deleteTicketRequest" type="xs:integer"/>
+			<xs:element name="deleteTicketResponse" type="xs:integer"/>
+			<xs:element name="getAllMessageRequest" type="xs:integer"/>
+			<xs:element name="getMessageRequest" type="xs:integer"/>
+			<xs:element name="getMessageResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fk_ticket_id" type="xs:integer"/>
+						<xs:element name="from_name" type="xs:string"/>
+						<xs:element name="body" type="xs:boolean"/>
+						<xs:element name="htmlized" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="type">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="reply"/>
+									<xs:enumeration value="note"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="from" type="xs:string"/>
+						<xs:element name="to" type="xs:string"/>
+						<xs:element name="cc" type="xs:string"/>
+						<xs:element name="bcc" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="subject" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getAllMessageResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fk_ticket_id" type="xs:integer"/>
+						<xs:element name="from_name" type="xs:string"/>
+						<xs:element name="body" type="xs:boolean"/>
+						<xs:element name="htmlized" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="type">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="reply"/>
+									<xs:enumeration value="note"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="from" type="xs:string"/>
+						<xs:element name="to" type="xs:string"/>
+						<xs:element name="cc" type="xs:string"/>
+						<xs:element name="bcc" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="subject" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="inputMessageRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fk_ticket_id" type="xs:integer"/>
+						<xs:element name="from_name" type="xs:string"/>
+						<xs:element name="body" type="xs:boolean"/>
+						<xs:element name="htmlized" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="type">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="reply"/>
+									<xs:enumeration value="note"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="from" type="xs:string"/>
+						<xs:element name="to" type="xs:string"/>
+						<xs:element name="cc" type="xs:string"/>
+						<xs:element name="bcc" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="subject" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="inputMessageResponse" type="xs:integer"/>
+			<xs:element name="updateMessageRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="fk_ticket_id" type="xs:integer"/>
+						<xs:element name="from_name" type="xs:string"/>
+						<xs:element name="body" type="xs:boolean"/>
+						<xs:element name="htmlized" type="xs:string"/>
+						<xs:element name="user_id" type="xs:string"/>
+						<xs:element name="type">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="reply"/>
+									<xs:enumeration value="note"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="created_at" type="xs:date"/>
+						<xs:element name="from" type="xs:string"/>
+						<xs:element name="to" type="xs:string"/>
+						<xs:element name="cc" type="xs:string"/>
+						<xs:element name="bcc" type="xs:string"/>
+						<xs:element name="reply_to" type="xs:string"/>
+						<xs:element name="subject" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="updateMessageResponse" type="xs:integer"/>
+			<xs:element name="deleteMessageRequest" type="xs:integer"/>
+			<xs:element name="deleteMessageResponse" type="xs:integer"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="getAllTicketsSoapIn">
+		<wsdl:part name="parameters" element="tns:getAllTicketRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getAllTicketsSoapOut">
+		<wsdl:part name="parameters" element="tns:getAllTicketResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getTicketsSoapIn">
+		<wsdl:part name="parameters" element="tns:getTicketRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getTicketsSoapOut">
+		<wsdl:part name="parameters" element="tns:getTicketResponse"/>
+	</wsdl:message>
+	<wsdl:message name="inputTicketsSoapIn">
+		<wsdl:part name="parameters" element="tns:inputTicketRequest"/>
+	</wsdl:message>
+	<wsdl:message name="inputTicketsSoapOut">
+		<wsdl:part name="parameters" element="tns:inputTicketResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateTicketsSoapIn">
+		<wsdl:part name="parameters" element="tns:updateTicketRequest"/>
+	</wsdl:message>
+	<wsdl:message name="updateTicketsSoapOut">
+		<wsdl:part name="parameters" element="tns:updateTicketResponse"/>
+	</wsdl:message>
+	<wsdl:message name="deleteTicketsSoapIn">
+		<wsdl:part name="parameters" element="tns:deleteTicketRequest"/>
+	</wsdl:message>
+	<wsdl:message name="deleteTicketsSoapOut">
+		<wsdl:part name="parameters" element="tns:deleteTicketResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getMessageSoapIn">
+		<wsdl:part name="parameters" element="tns:getMessageRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getMessageSoapOut">
+		<wsdl:part name="parameters" element="tns:getMessageResponse"/>
+	</wsdl:message>
+	<wsdl:message name="getAllMessagesSoapIn">
+		<wsdl:part name="parameters" element="tns:getAllMessageRequest"/>
+	</wsdl:message>
+	<wsdl:message name="getAllMessagesSoapOut">
+		<wsdl:part name="parameters" element="tns:getAllMessageResponse"/>
+	</wsdl:message>
+	<wsdl:message name="inputMessageSoapIn">
+		<wsdl:part name="parameters" element="tns:inputMessageRequest"/>
+	</wsdl:message>
+	<wsdl:message name="inputMessageSoapOut">
+		<wsdl:part name="parameters" element="tns:inputMessageResponse"/>
+	</wsdl:message>
+	<wsdl:message name="updateMessageSoapIn">
+		<wsdl:part name="parameters" element="tns:updateMessageRequest"/>
+	</wsdl:message>
+	<wsdl:message name="updateMessageSoapOut">
+		<wsdl:part name="parameters" element="tns:updateMessageResponse"/>
+	</wsdl:message>
+	<wsdl:message name="deleteMessageSoapIn">
+		<wsdl:part name="parameters" element="tns:deleteMessageRequest"/>
+	</wsdl:message>
+	<wsdl:message name="deleteMessageSoapOut">
+		<wsdl:part name="parameters" element="tns:deleteMessageResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="ticketOperations">
+		<wsdl:operation name="getMessageRequest">
+			<wsdl:input message="ws:getMessageSoapIn"/>
+			<wsdl:output message="ws:getMessageSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="getTicketRequest">
+			<wsdl:input message="ws:getTicketsSoapIn"/>
+			<wsdl:output message="ws:getTicketsSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="getAllTicketRequest">
+			<wsdl:input message="ws:getAllTicketsSoapIn"/>
+			<wsdl:output message="ws:getAllTicketsSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="inputTicketRequest">
+			<wsdl:input message="ws:inputTicketsSoapIn"/>
+			<wsdl:output message="ws:inputTicketsSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateTicketRequest">
+			<wsdl:input message="ws:updateTicketsSoapIn"/>
+			<wsdl:output message="ws:updateTicketsSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="deleteTicketRequest">
+			<wsdl:input message="ws:deleteTicketsSoapIn"/>
+			<wsdl:output message="ws:deleteTicketsSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="inputMessageRequest">
+			<wsdl:input message="ws:inputMessageSoapIn"/>
+			<wsdl:output message="ws:inputMessageSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="getAllMessageRequest">
+			<wsdl:input message="ws:getAllMessagesSoapIn"/>
+			<wsdl:output message="ws:getAllMessagesSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateMessageRequest">
+			<wsdl:input message="ws:updateMessageSoapIn"/>
+			<wsdl:output message="ws:updateMessageSoapOut"/>
+		</wsdl:operation>
+		<wsdl:operation name="deleteMessageRequest">
+			<wsdl:input message="ws:deleteMessageSoapIn"/>
+			<wsdl:output message="ws:deleteMessageSoapOut"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ticketOperations" type="ws:ticketOperations">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getTicketRequest">
+			<soap:operation soapAction="http://SOAPproject/getTicketRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAllTicketRequest">
+			<soap:operation soapAction="http://SOAPproject/getAllTicketRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="inputTicketRequest">
+			<soap:operation soapAction="http://SOAPproject/inputTicketRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateTicketRequest">
+			<soap:operation soapAction="http://SOAPproject/updateTicketRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="deleteTicketRequest">
+			<soap:operation soapAction="http://SOAPproject/deleteTicketRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getMessageRequest">
+			<soap:operation soapAction="http://SOAPproject/getMessageRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getAllMessageRequest">
+			<soap:operation soapAction="http://SOAPproject/getAllMessageRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="inputMessageRequest">
+			<soap:operation soapAction="http://SOAPproject/inputMessageRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="updateMessageRequest">
+			<soap:operation soapAction="http://SOAPproject/updateMessageRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="deleteMessageRequest">
+			<soap:operation soapAction="http://SOAPproject/deleteMessageRequest" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SOAPTicket">
+		<wsdl:port name="ticketOperations" binding="ws:ticketOperations">
+			<soap:address location="x"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
